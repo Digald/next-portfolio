@@ -7,12 +7,15 @@
     "start": "next start"
   },
   "dependencies": {
+    "@react-three/fiber": "^8.15.19",
+    "glslify-loader": "^2.0.0",
     "gray-matter": "^4.0.3",
     "next": "^13.5.6",
     "nextra": "^2.13.2",
     "nextra-theme-blog": "^2.13.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "three": "^0.162.0"
   },
   "prettier": {
     "arrowParens": "always",
@@ -20,6 +23,5 @@
     "tabWidth": 2,
     "trailingComma": "none",
     "semi": false
-  },
-  "packageManager": "yarn@4.1.1"
+  }
 }

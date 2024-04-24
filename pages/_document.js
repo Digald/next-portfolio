@@ -21,8 +21,10 @@ export default function Document() {
         <meta name="twitter:title" content={meta.title} />
         <meta name="twitter:description" content={meta.description} />
         <meta name="twitter:image" content={meta.image} />
+        <script type="module" src="/js/starField.js"></script>
       </Head>
       <body>
+        <canvas id="canvas"></canvas>
         <Main />
         <NextScript />
       </body>
