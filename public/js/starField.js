@@ -26,26 +26,24 @@ resizeCanvas()
 // Resize canvas on window resize
 window.addEventListener('resize', resizeCanvas)
 
-const geometry = new THREE.BoxGeometry()
-const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-const cube = new THREE.Mesh(geometry, material)
-const rotationSpeed = 0.001
-scene.add(cube)
-
 camera.position.z = 5
+
+// Set the rotation axis for the starfield
+const rotationAxis = new THREE.Vector3(-1, 1, 0).normalize()
+const rotationSpeed = 0.0001
 
 function animate() {
   requestAnimationFrame(animate)
-  cube.rotation.x += 0.01
-  cube.rotation.y += 0.01
-  stars.rotation.y += rotationSpeed // Rotate the starfield
+  // Rotate the starfield around the specified axis
+  stars.rotateOnAxis(rotationAxis, rotationSpeed)
   renderer.render(scene, camera)
 }
 
 const starsGeometry = new THREE.BufferGeometry()
-const starsMaterial = new THREE.PointsMaterial({ color: 0x888888 })
 const starsCount = 5000
 const positionArray = new Float32Array(starsCount * 3)
+const colorArray = new Float32Array(starsCount * 3)
+const sizeArray = new Float32Array(starsCount)
 const radius = 500 // Adjust this value to control the size of the star field
 
 for (let i = 0; i < starsCount; i++) {
@@ -53,18 +51,40 @@ for (let i = 0; i < starsCount; i++) {
   const y = Math.random() * 2 - 1 // Random value between -1 and 1
   const z = Math.random() * 2 - 1 // Random value between -1 and 1
   const starPosition = new THREE.Vector3(x, y, z)
-  starPosition.normalize().multiplyScalar(radius) // Set the star position on a sphere with the specified radius
+  // Set the star position on a sphere with the specified radius
+  starPosition.normalize().multiplyScalar(radius)
   positionArray[i * 3] = starPosition.x
   positionArray[i * 3 + 1] = starPosition.y
   positionArray[i * 3 + 2] = starPosition.z
+
+  // Set random brightness value for each star
+  const brightness = Math.random()
+  const color = new THREE.Color(0x888888)
+  color.multiplyScalar(brightness)
+  colorArray[i * 3] = color.r
+  colorArray[i * 3 + 1] = color.g
+  colorArray[i * 3 + 2] = color.b
+
+  // Set random size value for each star
+  const size = Math.random() * 5 + 1
+  sizeArray[i] = size
 }
 
 starsGeometry.setAttribute(
   'position',
   new THREE.BufferAttribute(positionArray, 3)
 )
+
+starsGeometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3))
+starsGeometry.setAttribute('size', new THREE.BufferAttribute(sizeArray, 1))
+
+const starsMaterial = new THREE.PointsMaterial({
+  vertexColors: true,
+  sizeAttenuation: true,
+  size: 1
+})
+
 const stars = new THREE.Points(starsGeometry, starsMaterial)
 scene.add(stars)
 
-console.log('log hello')
 animate()
