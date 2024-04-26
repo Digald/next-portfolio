@@ -22,7 +22,7 @@ export default function Document() {
         <meta name="twitter:description" content={meta.description} />
         <meta name="twitter:image" content={meta.image} />
         <link rel="stylesheet" href="/css/global.css" />
-        <script type="module" src="/js/starField.js"></script>
+        <script type="module" src="/js/main.js"></script>
       </Head>
       <body>
         <canvas id="canvas"></canvas>
